@@ -110,6 +110,7 @@ SET (   SRC_LIB
 		src/ltablib.cpp
 		src/ltm.cpp
 		src/lundump.cpp
+		src/lutf8lib.cpp
 		src/lvm.cpp
 		src/lzio.cpp
 		)
