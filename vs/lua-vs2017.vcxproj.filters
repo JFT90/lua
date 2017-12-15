@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="library">
+      <UniqueIdentifier>{7097de25-7a35-4bc2-86bd-38d875a2f576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interpreter">
+      <UniqueIdentifier>{cece6dc1-6ef3-47c9-baad-299bf7c801a2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\lapi.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lcode.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lctype.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ldebug.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ldo.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ldump.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lfunc.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lgc.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\llex.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lmem.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lobject.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lopcodes.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lparser.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lstate.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lstring.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ltable.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ltm.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lundump.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lvm.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lzio.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lauxlib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lbaselib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lbitlib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lcorolib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ldblib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\liolib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lmathlib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\loslib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lstrlib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ltablib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\loadlib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\linit.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lua.cpp">
+      <Filter>interpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lnet.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lutf8lib.cpp">
+      <Filter>library</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
