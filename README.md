@@ -1,7 +1,9 @@
 
-This is Lua 5.2.4, released on 25 Feb 2015.
+This is Lua 5.3.4, released on 30 Jan 2017.
 
-[![Build Status](https://secure.travis-ci.org/NLua/lua.svg?branch=master)](https://travis-ci.org/NLua/lua)
+[![Build Status](https://travis-ci.org/Artum/lua.svg?branch=lua-5.3.4)](https://travis-ci.org/Artum/lua)
 
 For installation instructions, license details, and
 further information about Lua, see doc/readme.html.
+
+Lua 5.3 official readme: http://www.lua.org/manual/5.3/readme.html
