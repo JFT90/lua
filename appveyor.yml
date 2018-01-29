@@ -22,7 +22,7 @@ before_build:
 - cmd: |-
     mkdir build\static
     cd build\static
-    cmake .. -G "%generator%"
+    cmake ..\.. -G "%generator%"
   
 build_script:
   - cmake --build build\static --config Release -DUSE_STATIC_RT=ON
