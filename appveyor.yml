@@ -20,7 +20,6 @@ environment:
 
 configuration: 
   Release
-  Debug
 
 before_build:
   - cmd: |-
