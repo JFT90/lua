@@ -20,12 +20,13 @@ environment:
 
 configuration: 
   Release
+  Config
 
 before_build:
   - cmd: |-
-    mkdir build\static
-    cd build\static
-    cmake ..\.. -G "%generator%" -DUSE_STATIC_RT=ON
+      mkdir build\static
+      cd build\static
+      cmake ..\.. -G "%generator%" -DUSE_STATIC_RT=ON
   
 build:
   project: c:\projects\lua\build\lua.sln
