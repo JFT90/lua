@@ -18,12 +18,17 @@ environment:
     - generator: "Visual Studio 15"
     - generator: "Visual Studio 15 Win64"
 
+configuration: 
+  Release
+  Debug
+
 before_build:
-- cmd: |-
+  - cmd: |-
     mkdir build\static
     cd build\static
-    cmake ..\.. -G "%generator%"
+    cmake ..\.. -G "%generator%" -DUSE_STATIC_RT=ON
   
-build_script:
-  - cmake --build build\static --config Release -DUSE_STATIC_RT=ON
-  
+build:
+  project: c:\projects\lua\build\lua.sln
+  verbosity: quite
+  parallel: true
