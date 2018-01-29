@@ -9,19 +9,21 @@
 PROJECT ( lua CXX )
 CMAKE_MINIMUM_REQUIRED ( VERSION 2.8.7 )
 
+OPTION ( USE_STATIC_RT "Use the static runtime" ON )
+
 IF (CMAKE_SIZEOF_VOID_P EQUAL 8)
 	SET (LIB_SUFFIX "64" CACHE STRING "Suffix of the directory name, e.g. 64 for lib64")
 ELSE (CMAKE_SIZEOF_VOID_P EQUAL 8)
 	SET (LIB_SUFFIX "" CACHE STRING "Suffix of the directory name, e.g. 64 for lib64")
 ENDIF (CMAKE_SIZEOF_VOID_P EQUAL 8)
 
-set(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
-if (APPLE)
-  set(CMAKE_INSTALL_NAME_DIR "@rpath")
-  set(CMAKE_INSTALL_RPATH "@executable_path/../lib${LIB_SUFFIX}")
-else(UNIX)
-  set(CMAKE_INSTALL_RPATH "\$ORIGIN/../lib${LIB_SUFFIX}")
-endif()
+SET (CMAKE_BUILD_WITH_INSTALL_RPATH ON)
+IF (APPLE)
+  SET (CMAKE_INSTALL_NAME_DIR "@rpath")
+  SET (CMAKE_INSTALL_RPATH "@executable_path/../lib${LIB_SUFFIX}")
+ELSE (UNIX)
+  SET (CMAKE_INSTALL_RPATH "\$ORIGIN/../lib${LIB_SUFFIX}")
+ENDIF ()
 
 SET(CMAKE_DEBUG_POSTFIX "d")
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib${LIB_SUFFIX}" CACHE STRING "Library build output directory")
@@ -29,7 +31,7 @@ SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib${LIB_SUFFIX}")
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin${LIB_SUFFIX}")
 SET(EXECUTABLE_OUTPUT_PATH         "${CMAKE_BINARY_DIR}/bin${LIB_SUFFIX}")
 
-SET (LIB_LUA_VER "52" CACHE STRING "Suffix of version (for library name) e.g lua52")
+SET (LIB_LUA_VER "53" CACHE STRING "Suffix of version (for library name) e.g lua53")
 
 #
 # Include dir COPY
@@ -75,6 +77,18 @@ IF ( LUA_WIN )
   ENDIF ()
 ENDIF ()
 
+IF ( USE_STATIC_RT AND MSVC )
+  # Convert MS Visual Studio runtime library compilation flags from "Multi-threaded DLL" to "Multi-threaded"
+  FOREACH (flag_var
+           CMAKE_CXX_FLAGS 
+           CMAKE_CXX_FLAGS_DEBUG 
+           CMAKE_CXX_FLAGS_RELEASE
+           CMAKE_CXX_FLAGS_MINSIZEREL 
+           CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+    # Replace release flags: "/MDx" --> "/MTx"
+    STRING (REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+  ENDFOREACH ()
+ENDIF ()
 
 # Sources and headers
 INCLUDE_DIRECTORIES ( include )
