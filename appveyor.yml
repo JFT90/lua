@@ -19,9 +19,10 @@ environment:
     - generator: "Visual Studio 15 Win64"
 
 before_build:
-  - mkdir build\static
-  - cd build\static
-  cmd: cmake .. -G "%generator%"
+- cmd: |-
+    mkdir build\static
+    cd build\static
+    cmake .. -G %generator%
   
 build_script:
   - cmake --build build\static --config Release -DUSE_STATIC_RT=ON
