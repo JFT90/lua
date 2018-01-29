@@ -21,7 +21,7 @@ environment:
 before_build:
   - mkdir build\static
   - cd build\static
-  - cmake .. -G "{generator}"
+  cmd: cmake .. -G "%generator%"
   
 build_script:
   - cmake --build build\static --config Release -DUSE_STATIC_RT=ON
