@@ -11,112 +11,112 @@ image:
   - Visual Studio 2013
   - Visual Studio 2015
   - Visual Studio 2017
-
-matrix:
-  - generator: "Visual Studio 12"
-    config: Debug
-    static_runtime: ON
-
-  - generator: "Visual Studio 12"
-    config: Debug
-    static_runtime: OFF
-
-  - generator: "Visual Studio 12"
-    config: Release
-    static_runtime: ON
-    
-  - generator: "Visual Studio 12"
-    config: Release
-    static_runtime: OFF
-
-  - generator: "Visual Studio 12 Win64"
-    config: Debug
-    static_runtime: ON
-    
-  - generator: "Visual Studio 12 Win64"
-    config: Debug
-    static_runtime: OFF
-
-  - generator: "Visual Studio 12 Win64"
-    config: Release
-    static_runtime: ON
-
-  - generator: "Visual Studio 12 Win64"
-    config: Release
-    static_runtime: OFF
-  
-  - generator: "Visual Studio 14"
-    config: Debug
-    static_runtime: ON
-  
-  - generator: "Visual Studio 14"
-    config: Debug
-    static_runtime: OFF
-
-  - generator: "Visual Studio 14"
-    config: Release
-    static_runtime: ON
-
-  - generator: "Visual Studio 14"
-    config: Release
-    static_runtime: OFF
-
-  - generator: "Visual Studio 14 Win64"
-    config: Debug
-    static_runtime: ON
-
-  - generator: "Visual Studio 14 Win64"
-    config: Debug
-    static_runtime: OFF
-
-  - generator: "Visual Studio 14 Win64"
-    config: Release
-    static_runtime: ON
-
-  - generator: "Visual Studio 14 Win64"
-    config: Release
-    static_runtime: OFF
-  
-  - generator: "Visual Studio 15"
-    config: Debug
-    static_runtime: ON
-  
-  - generator: "Visual Studio 15"
-    config: Debug
-    static_runtime: OFF
-
-  - generator: "Visual Studio 15"
-    config: Release
-    static_runtime: ON
-
-  - generator: "Visual Studio 15"
-    config: Release
-    static_runtime: OFF
-
-  - generator: "Visual Studio 15 Win64"
-    config: Debug
-    static_runtime: ON
-
-  - generator: "Visual Studio 15 Win64"
-    config: Debug
-    static_runtime: OFF
-
-  - generator: "Visual Studio 15 Win64"
-    config: Release
-    static_runtime: ON
-
-  - generator: "Visual Studio 15 Win64"
-    config: Release
-    static_runtime: OFF
   
 matrix:
   fast_finish: true
+  
+environment:
+  matrix:
+    - generator: "Visual Studio 12"
+      config: Debug
+      static_runtime: ON
+    
+    - generator: "Visual Studio 12"
+      config: Debug
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 12"
+      config: Release
+      static_runtime: ON
+      
+    - generator: "Visual Studio 12"
+      config: Release
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 12 Win64"
+      config: Debug
+      static_runtime: ON
+      
+    - generator: "Visual Studio 12 Win64"
+      config: Debug
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 12 Win64"
+      config: Release
+      static_runtime: ON
+    
+    - generator: "Visual Studio 12 Win64"
+      config: Release
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 14"
+      config: Debug
+      static_runtime: ON
+    
+    - generator: "Visual Studio 14"
+      config: Debug
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 14"
+      config: Release
+      static_runtime: ON
+    
+    - generator: "Visual Studio 14"
+      config: Release
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 14 Win64"
+      config: Debug
+      static_runtime: ON
+    
+    - generator: "Visual Studio 14 Win64"
+      config: Debug
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 14 Win64"
+      config: Release
+      static_runtime: ON
+    
+    - generator: "Visual Studio 14 Win64"
+      config: Release
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 15"
+      config: Debug
+      static_runtime: ON
+    
+    - generator: "Visual Studio 15"
+      config: Debug
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 15"
+      config: Release
+      static_runtime: ON
+    
+    - generator: "Visual Studio 15"
+      config: Release
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 15 Win64"
+      config: Debug
+      static_runtime: ON
+    
+    - generator: "Visual Studio 15 Win64"
+      config: Debug
+      static_runtime: OFF
+    
+    - generator: "Visual Studio 15 Win64"
+      config: Release
+      static_runtime: ON
+    
+    - generator: "Visual Studio 15 Win64"
+      config: Release
+      static_runtime: OFF
 
 before_build:
-- cmd:
-  mkdir build
-  cd build
-  cmake .. -G %generator%
+  - mkdir build
+  - cd build
+  - cmake .. -G %generator%
   
 build_script:
   - cmake --build build --config "%config%" -DUSE_STATIC_RT=%static_runtime%
