@@ -718,7 +718,7 @@ LUA_API int lua_yieldk (lua_State *L, int nresults, lua_KContext ctx,
 }
 
 LUA_API int lua_yield (lua_State *L, int nresults) {
-  return lua_yieldk(L, nresults, 0, NULL)
+  return lua_yieldk(L, nresults, 0, NULL);
 }
 
 int luaD_pcall (lua_State *L, Pfunc func, void *u,
