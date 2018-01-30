@@ -26,11 +26,11 @@ environment:
 
 before_build:
   - cmd: |-
-      mkdir build\static
-      cd build\static
-      cmake ..\.. -G "%generator%" -DUSE_STATIC_RT=%static_runtime%
+      mkdir build
+      cd build
+      cmake .. -G "%generator%" -DUSE_STATIC_RT=%static_runtime%
   
 build:
-  project: c:\projects\lua\build\static\lua.sln
+  project: c:\projects\lua\build\lua.sln
   verbosity: quiet
   parallel: true
