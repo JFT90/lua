@@ -341,7 +341,7 @@ LUA_API void      (lua_setallocf) (lua_State *L, lua_Alloc f, void *ud);
 #define lua_tonumber(L,i)	lua_tonumberx(L,(i),NULL)
 #define lua_tointeger(L,i)	lua_tointegerx(L,(i),NULL)
 
-#define lua_pop(L,n)		lua_settop(L, -(n)-1)
+LUA_API void lua_pop (lua_State *L, int idx);
 
 #define lua_newtable(L)		lua_createtable(L, 0, 0)
 
@@ -368,7 +368,7 @@ LUA_API void      (lua_setallocf) (lua_State *L, lua_Alloc f, void *ud);
 
 #define lua_insert(L,idx)	lua_rotate(L, (idx), 1)
 
-#define lua_remove(L,idx)	(lua_rotate(L, (idx), -1), lua_pop(L, 1))
+LUA_API void lua_remove (lua_State *L, int idx);
 
 #define lua_replace(L,idx)	(lua_copy(L, -1, (idx)), lua_pop(L, 1))
 

@@ -185,6 +185,9 @@ LUA_API void lua_settop (lua_State *L, int idx) {
   lua_unlock(L);
 }
 
+LUA_API void lua_pop (lua_State *L, int idx) {
+  lua_settop(L, -(idx)-1);
+}
 
 /*
 ** Reverse the stack segment from 'from' to 'to'
@@ -218,6 +221,10 @@ LUA_API void lua_rotate (lua_State *L, int idx, int n) {
   lua_unlock(L);
 }
 
+LUA_API void lua_remove (lua_State *L, int idx) {
+  lua_rotate(L, idx, -1);
+  lua_pop(L, 1);
+}
 
 LUA_API void lua_copy (lua_State *L, int fromidx, int toidx) {
   TValue *fr, *to;
