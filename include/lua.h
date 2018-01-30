@@ -343,7 +343,6 @@ LUA_API lua_Integer lua_tointeger(lua_State *L, int idx);
 
 LUA_API void lua_pop (lua_State *L, int idx);
 
-#define lua_newtable(L)		lua_createtable(L, 0, 0)
 
 #define lua_register(L,n,f) (lua_pushcfunction(L, (f)), lua_setglobal(L, (n)))
 
