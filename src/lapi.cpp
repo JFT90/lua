@@ -574,6 +574,10 @@ LUA_API void lua_pushcclosure (lua_State *L, lua_CFunction fn, int n) {
   lua_unlock(L);
 }
 
+LUA_API void lua_pushcfunction(lua_State *L, lua_CFunction fn) {
+  lua_pushcclosure(L, fn, 0);
+}
+
 
 LUA_API void lua_pushboolean (lua_State *L, int b) {
   lua_lock(L);
