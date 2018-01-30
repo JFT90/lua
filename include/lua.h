@@ -357,7 +357,7 @@ LUA_API void lua_pushcfunction(lua_State *L, lua_CFunction fn);
 #define lua_isnone(L,n)		(lua_type(L, (n)) == LUA_TNONE)
 #define lua_isnoneornil(L, n)	(lua_type(L, (n)) <= 0)
 
-#define lua_pushliteral(L, s)	lua_pushstring(L, "" s)
+LUA_API const char *lua_pushliteral(lua_State *L, const char *s);
 
 LUA_API void lua_pushglobaltable(lua_State *L);
 

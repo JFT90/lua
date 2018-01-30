@@ -534,6 +534,9 @@ LUA_API const char *lua_pushstring (lua_State *L, const char *s) {
   return s;
 }
 
+LUA_API const char *lua_pushliteral(lua_State *L, const char *s) {
+	(s == nullptr) ? lua_pushstring(L, "") : lua_pushstring(L, s);
+}
 
 LUA_API const char *lua_pushvfstring (lua_State *L, const char *fmt,
                                       va_list argp) {
