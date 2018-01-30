@@ -338,8 +338,8 @@ LUA_API void      (lua_setallocf) (lua_State *L, lua_Alloc f, void *ud);
 
 LUA_API void* lua_getextraspace(lua_State *L);
 
-#define lua_tonumber(L,i)	lua_tonumberx(L,(i),NULL)
-#define lua_tointeger(L,i)	lua_tointegerx(L,(i),NULL)
+LUA_API lua_Number lua_tonumber(lua_State *L, int idx);
+LUA_API lua_Integer lua_tointeger(lua_State *L, int idx);
 
 LUA_API void lua_pop (lua_State *L, int idx);
 

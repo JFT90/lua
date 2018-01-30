@@ -363,6 +363,10 @@ LUA_API lua_Number lua_tonumberx (lua_State *L, int idx, int *pisnum) {
   return n;
 }
 
+LUA_API lua_Number lua_tonumber(lua_State *L, int idx) {
+	return lua_tonumberx(L, idx, NULL);
+}
+
 LUA_API void* lua_getextraspace(lua_State *L) {
 	return ((void *)((char *)(L)-LUA_EXTRASPACE));
 }
@@ -375,6 +379,10 @@ LUA_API lua_Integer lua_tointegerx (lua_State *L, int idx, int *pisnum) {
     res = 0;  /* call to 'tointeger' may change 'n' even if it fails */
   if (pisnum) *pisnum = isnum;
   return res;
+}
+
+LUA_API lua_Integer lua_tointeger(lua_State *L, int idx) {
+  return lua_tointegerx(L, idx, NULL);
 }
 
 
