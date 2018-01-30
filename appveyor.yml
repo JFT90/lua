@@ -18,10 +18,6 @@ environment:
     - generator: "Visual Studio 15"
     - generator: "Visual Studio 15 Win64"
 
-configuration: 
-  Release
-  Debug
-
 before_build:
   - cmd: |-
       mkdir build\static
