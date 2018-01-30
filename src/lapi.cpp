@@ -269,6 +269,37 @@ LUA_API int lua_type (lua_State *L, int idx) {
   return (isvalid(o) ? ttnov(o) : LUA_TNONE);
 }
 
+LUA_API bool lua_isfunction(lua_State *L, int idx) {
+  return lua_type(L, idx) == LUA_TFUNCTION;
+}
+
+LUA_API bool lua_istable(lua_State *L, int idx) {
+  return lua_type(L, idx) == LUA_TTABLE;
+}
+
+LUA_API bool lua_islightuserdata(lua_State *L, int idx) {
+  return lua_type(L, idx) == LUA_TLIGHTUSERDATA;
+}
+
+LUA_API bool lua_isnil(lua_State *L, int idx) {
+  return lua_type(L, idx) == LUA_TNIL;
+}
+
+LUA_API bool lua_isboolean(lua_State *L, int idx) {
+  return lua_type(L, idx) == LUA_TBOOLEAN;
+}
+
+LUA_API bool lua_isthread(lua_State *L, int idx) {
+  return lua_type(L, idx) == LUA_TTHREAD;
+}
+
+LUA_API bool lua_isnone(lua_State *L, int idx) {
+  return lua_type(L, idx) == LUA_TNONE;
+}
+
+LUA_API bool lua_isnoneornil(lua_State *L, int idx) {
+  return lua_type(L, idx) <= 0;
+}
 
 LUA_API const char *lua_typename (lua_State *L, int t) {
   UNUSED(L);
@@ -535,7 +566,7 @@ LUA_API const char *lua_pushstring (lua_State *L, const char *s) {
 }
 
 LUA_API const char *lua_pushliteral(lua_State *L, const char *s) {
-	(s == nullptr) ? lua_pushstring(L, "") : lua_pushstring(L, s);
+  return s == nullptr ? lua_pushstring(L, "") : lua_pushstring(L, s);
 }
 
 LUA_API const char *lua_pushvfstring (lua_State *L, const char *fmt,
