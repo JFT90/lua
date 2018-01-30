@@ -362,7 +362,7 @@ LUA_API void lua_pushcfunction(lua_State *L, lua_CFunction fn);
 #define lua_pushglobaltable(L)  \
 	((void)lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_GLOBALS))
 
-#define lua_tostring(L,i)	lua_tolstring(L, (i), NULL)
+LUA_API const char *lua_tostring(lua_State *L, int idx);
 
 LUA_API void lua_insert (lua_State *L, int idx);
 LUA_API void lua_remove (lua_State *L, int idx);
