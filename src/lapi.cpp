@@ -699,6 +699,10 @@ LUA_API int lua_rawgeti (lua_State *L, int idx, lua_Integer n) {
   return ttnov(L->top - 1);
 }
 
+LUA_API void lua_pushglobaltable(lua_State *L) {
+  (void)lua_rawgeti(L, LUA_REGISTRYINDEX, LUA_RIDX_GLOBALS);
+}
+
 
 LUA_API int lua_rawgetp (lua_State *L, int idx, const void *p) {
   StkId t;
