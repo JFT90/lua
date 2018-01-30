@@ -343,9 +343,9 @@ LUA_API lua_Integer lua_tointeger(lua_State *L, int idx);
 
 LUA_API void lua_pop (lua_State *L, int idx);
 
+LUA_API void lua_newtable(lua_State *L);
 
-#define lua_register(L,n,f) (lua_pushcfunction(L, (f)), lua_setglobal(L, (n)))
-
+LUA_API void lua_register(lua_State *L, const char *name, lua_CFunction fn);
 LUA_API void lua_pushcfunction(lua_State *L, lua_CFunction fn);
 
 #define lua_isfunction(L,n)	(lua_type(L, (n)) == LUA_TFUNCTION)

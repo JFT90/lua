@@ -790,6 +790,10 @@ LUA_API void lua_setglobal (lua_State *L, const char *name) {
   auxsetstr(L, luaH_getint(reg, LUA_RIDX_GLOBALS), name);
 }
 
+LUA_API void lua_register(lua_State *L, const char *name, lua_CFunction fn) {
+  lua_pushcfunction(L, fn);
+  lua_setglobal(L, name);
+}
 
 LUA_API void lua_settable (lua_State *L, int idx) {
   StkId t;
