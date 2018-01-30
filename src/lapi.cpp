@@ -226,6 +226,10 @@ LUA_API void lua_remove (lua_State *L, int idx) {
   lua_pop(L, 1);
 }
 
+LUA_API void lua_insert (lua_State *L, int idx) {
+  lua_rotate(L, idx, 1);
+}
+
 LUA_API void lua_copy (lua_State *L, int fromidx, int toidx) {
   TValue *fr, *to;
   lua_lock(L);
