@@ -16,13 +16,19 @@ matrix:
 environment:
   matrix:
     - generator: "Visual Studio 15"
+      static_runtime: 1
     - generator: "Visual Studio 15 Win64"
+      static_runtime: 1
+    - generator: "Visual Studio 15"
+      static_runtime: 0
+    - generator: "Visual Studio 15 Win64"
+      static_runtime: 0
 
 before_build:
   - cmd: |-
       mkdir build\static
       cd build\static
-      cmake ..\.. -G "%generator%" -DUSE_STATIC_RT=ON
+      cmake ..\.. -G "%generator%" -DUSE_STATIC_RT=%static_runtime%
   
 build:
   project: c:\projects\lua\build\static\lua.sln
