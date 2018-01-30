@@ -29,6 +29,6 @@ before_build:
       cmake ..\.. -G "%generator%" -DUSE_STATIC_RT=ON
   
 build:
-  project: c:\projects\lua\build\lua.sln
+  project: c:\projects\lua\build\static\lua.sln
   verbosity: quite
   parallel: true
