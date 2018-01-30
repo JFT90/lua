@@ -30,5 +30,5 @@ before_build:
   
 build:
   project: c:\projects\lua\build\static\lua.sln
-  verbosity: quite
+  verbosity: quiet
   parallel: true
