@@ -271,7 +271,7 @@ LUA_API void  (lua_setuservalue) (lua_State *L, int idx);
 */
 LUA_API void  (lua_callk) (lua_State *L, int nargs, int nresults,
                            lua_KContext ctx, lua_KFunction k);
-#define lua_call(L,n,r)		lua_callk(L, (n), (r), 0, NULL)
+LUA_API void  (lua_call) (lua_State *L, int nargs, int nresults);
 
 LUA_API int   (lua_pcallk) (lua_State *L, int nargs, int nresults, int errfunc,
                             lua_KContext ctx, lua_KFunction k);

@@ -926,6 +926,10 @@ LUA_API void lua_callk (lua_State *L, int nargs, int nresults,
   lua_unlock(L);
 }
 
+LUA_API void lua_call (lua_State *L, int nargs, int nresults) {
+  return lua_callk(L, nargs, nresults, 0, NULL);
+}
+
 
 
 /*
