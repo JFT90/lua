@@ -363,6 +363,9 @@ LUA_API lua_Number lua_tonumberx (lua_State *L, int idx, int *pisnum) {
   return n;
 }
 
+LUA_API void* lua_getextraspace(lua_State *L) {
+	return ((void *)((char *)(L)-LUA_EXTRASPACE));
+}
 
 LUA_API lua_Integer lua_tointegerx (lua_State *L, int idx, int *pisnum) {
   lua_Integer res;
