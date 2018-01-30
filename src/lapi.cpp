@@ -991,6 +991,9 @@ LUA_API int lua_pcallk (lua_State *L, int nargs, int nresults, int errfunc,
   return status;
 }
 
+LUA_API int lua_pcall (lua_State *L, int nargs, int nresults, int errfunc) {
+  return lua_pcallk(L, nargs, nresults, errfunc, 0, NULL);
+}
 
 LUA_API int lua_load (lua_State *L, lua_Reader reader, void *data,
                       const char *chunkname, const char *mode) {
