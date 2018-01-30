@@ -244,6 +244,11 @@ LUA_API void lua_copy (lua_State *L, int fromidx, int toidx) {
   lua_unlock(L);
 }
 
+LUA_API void lua_replace(lua_State *L, int idx) {
+  lua_copy(L, -1, (idx));
+  lua_pop(L, 1);
+}
+
 
 LUA_API void lua_pushvalue (lua_State *L, int idx) {
   lua_lock(L);

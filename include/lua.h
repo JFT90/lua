@@ -365,10 +365,8 @@ LUA_API void lua_pushcfunction(lua_State *L, lua_CFunction fn);
 #define lua_tostring(L,i)	lua_tolstring(L, (i), NULL)
 
 LUA_API void lua_insert (lua_State *L, int idx);
-
 LUA_API void lua_remove (lua_State *L, int idx);
-
-#define lua_replace(L,idx)	(lua_copy(L, -1, (idx)), lua_pop(L, 1))
+LUA_API void lua_replace(lua_State *L, int idx);
 
 /* }============================================================== */
 
