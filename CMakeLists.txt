@@ -210,3 +210,6 @@ ADD_TEST(NAME test_all
          WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test 
 		 COMMAND lua ${TEST_PARAM} ${PROJECT_SOURCE_DIR}/test/all.lua)
 
+install(TARGETS lua EXPORT LUA53EXP)
+export(TARGETS lua FILE ${CMAKE_BINARY_DIR}/Lua53-config.cmake)
+export(PACKAGE Lua53)
