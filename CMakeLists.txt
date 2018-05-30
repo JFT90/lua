@@ -1,214 +1,122 @@
-# Copyright (C) 2007-2011 LuaDist.
-# Created by Peter Drahoš, Peter Kapec
-# Redistribution and use of this file is allowed according to the terms of the MIT license.
-# For details see the COPYRIGHT file distributed with LuaDist.
-# Please note that the package source code is licensed under its own license.
+cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
-# Changed by Vinicius Jarina (viniciusjarina@gmail.com)
+if(NOT CMAKE_BUILD_TYPE)
+	set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type: Debug or Release" FORCE)
+endif()
 
-PROJECT ( lua CXX )
-CMAKE_MINIMUM_REQUIRED ( VERSION 2.8.7 )
+if(CMAKE_CONFIGURATION_TYPES)
+	set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Limited configurartions" FORCE)
+	mark_as_advanced(CMAKE_CONFIGURATION_TYPES)
+endif()
 
-OPTION ( USE_STATIC_RT "Use the static runtime" ON )
+project(lua VERSION 5.3.3 LANGUAGES NONE)
 
-IF (CMAKE_SIZEOF_VOID_P EQUAL 8)
-	SET (LIB_SUFFIX "64" CACHE STRING "Suffix of the directory name, e.g. 64 for lib64")
-ELSE (CMAKE_SIZEOF_VOID_P EQUAL 8)
-	SET (LIB_SUFFIX "" CACHE STRING "Suffix of the directory name, e.g. 64 for lib64")
-ENDIF (CMAKE_SIZEOF_VOID_P EQUAL 8)
+option(LUA_BUILD_LUAC "Build Lua compiler" ON)
+option(LUA_BUILD_CLI "Build Lua CLI interpreter" ON)
+option(LUA_BUILD_CXX "Compile Lua as C++ project" OFF)
 
-SET (CMAKE_BUILD_WITH_INSTALL_RPATH ON)
-IF (APPLE)
-  SET (CMAKE_INSTALL_NAME_DIR "@rpath")
-  SET (CMAKE_INSTALL_RPATH "@executable_path/../lib${LIB_SUFFIX}")
-ELSE (UNIX)
-  SET (CMAKE_INSTALL_RPATH "\$ORIGIN/../lib${LIB_SUFFIX}")
-ENDIF ()
+if(LUA_BUILD_CXX)
+	enable_language(CXX)
+else()
+	enable_language(C)
+endif()
 
-SET(CMAKE_DEBUG_POSTFIX "d")
-SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib${LIB_SUFFIX}" CACHE STRING "Library build output directory")
-SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib${LIB_SUFFIX}")
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin${LIB_SUFFIX}")
-SET(EXECUTABLE_OUTPUT_PATH         "${CMAKE_BINARY_DIR}/bin${LIB_SUFFIX}")
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMake")
 
-SET (LIB_LUA_VER "53" CACHE STRING "Suffix of version (for library name) e.g lua53")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_DEBUG_POSTFIX "-d")
 
-#
-# Include dir COPY
-# If the source dir and the binary dir are not equals,
-# copy the content of libzond/cinlude to $/include
-# 
-IF(NOT ${PROJECT_SOURCE_DIR} STREQUAL ${PROJECT_BINARY_DIR})
-	SET(TEMP_INCLUDE_LUA_DIR_FROM "${PROJECT_SOURCE_DIR}/include")
-	SET(TEMP_INCLUDE_LUA_DIR_TO   "${PROJECT_BINARY_DIR}")
-	MESSAGE(STATUS "Copying include dirs from  ${TEMP_INCLUDE_LUA_DIR_FROM} to ${TEMP_INCLUDE_LUA_DIR_TO}")
-	FILE ( COPY ${TEMP_INCLUDE_LUA_DIR_FROM} DESTINATION ${TEMP_INCLUDE_LUA_DIR_TO})
-ENDIF()
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+	set(LUA_OS_LINUX 1)
+elseif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	set(LUA_OS_WINDOWS 1)
+endif()
 
-IF ( WIN32 AND NOT CYGWIN )
-  # Windows systems
-  OPTION ( LUA_WIN "Windows specific build." ON )
-  OPTION ( LUA_BUILD_AS_DLL "Build  Lua library as Dll." ON )
-  
-ELSE ()
-  # Posix systems (incl. Cygwin)
-  OPTION ( LUA_USE_POSIX "Use POSIX functionality." ON )
-  OPTION ( LUA_USE_DLOPEN "Use dynamic linker to load modules." ON )
-  
-ENDIF ()
+set(INSTALL_MISC_DIR share/lua)
 
-IF ( LUA_USE_POSIX )
-  # On POSIX Lua links to standard math library "m"
-  LIST ( APPEND LIBS m )
-  ADD_DEFINITIONS (-DLUA_USE_POSIX)
-ENDIF ()
+set(LUA_PUB_H src/lua.h src/luaconf.h src/lualib.h src/lauxlib.h src/lua.hpp)
 
-IF ( LUA_USE_DLOPEN )
-  # Link to dynamic linker library "dl"
-  LIST ( APPEND LIBS dl )
-ENDIF ()
+set(LUA_INT_H
+	src/lapi.h src/ldo.h src/lmem.h src/lstate.h src/lfunc.h src/lobject.h
+	src/lstring.h src/lcode.h src/lgc.h src/lopcodes.h src/ltable.h
+	src/lundump.h src/lctype.h src/llex.h src/lparser.h src/ltm.h src/lvm.h
+	src/ldebug.h src/llimits.h src/lprefix.h src/lzio.h)
 
-IF ( LUA_WIN )
-  # Add extra rc files to the windows build
-  IF ( MSVC OR MINGW )
-    SET ( LUA_DLL_RC src/lua_dll.rc )
-    SET ( LUA_RC src/lua.rc )
-    SET ( LUAC_RC src/luac.rc )
-  ENDIF ()
-ENDIF ()
+SET(LUA_SRC
+	src/lapi.c src/lcode.c src/lctype.c src/ldebug.c src/ldo.c src/ldump.c
+	src/lfunc.c src/lgc.c src/llex.c src/lmem.c src/lobject.c src/lopcodes.c
+	src/lparser.c src/lstate.c src/lstring.c src/ltable.c src/ltm.c
+	src/lundump.c src/lvm.c src/lzio.c src/lauxlib.c src/lbaselib.c
+	src/lbitlib.c src/lcorolib.c src/ldblib.c src/liolib.c src/lmathlib.c
+	src/loslib.c src/lstrlib.c src/ltablib.c src/lutf8lib.c src/loadlib.c
+	src/linit.c)
 
-IF ( USE_STATIC_RT AND MSVC )
-  # Convert MS Visual Studio runtime library compilation flags from "Multi-threaded DLL" to "Multi-threaded"
-  FOREACH (flag_var
-           CMAKE_CXX_FLAGS 
-           CMAKE_CXX_FLAGS_DEBUG 
-           CMAKE_CXX_FLAGS_RELEASE
-           CMAKE_CXX_FLAGS_MINSIZEREL 
-           CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-    # Replace release flags: "/MDx" --> "/MTx"
-    STRING (REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-  ENDFOREACH ()
-ENDIF ()
+set(LUA_LIB_NAME lua53)
+    
+add_library(${LUA_LIB_NAME} SHARED ${LUA_SRC} ${LUA_PUB_H} ${LUA_INT_H})
 
-# Sources and headers
-INCLUDE_DIRECTORIES ( include )
-SET (   SRC_LIB 
-		src/lapi.cpp
-		src/lauxlib.cpp
-		src/lbaselib.cpp
-		src/lbitlib.cpp
-		src/lcode.cpp
-		src/lcorolib.cpp
-		src/lctype.cpp
-		src/ldblib.cpp
-		src/ldebug.cpp
-		src/ldo.cpp
-		src/ldump.cpp
-		src/lfunc.cpp
-		src/lgc.cpp
-		src/linit.cpp
-		src/liolib.cpp
-		src/llex.cpp
-		src/lmathlib.cpp
-		src/lmem.cpp
-		src/lnet.cpp
-		src/loadlib.cpp
-		src/lobject.cpp
-		src/lopcodes.cpp
-		src/loslib.cpp
-		src/lparser.cpp
-		src/lstate.cpp
-		src/lstring.cpp
-		src/lstrlib.cpp
-		src/ltable.cpp
-		src/ltablib.cpp
-		src/ltm.cpp
-		src/lundump.cpp
-		src/lutf8lib.cpp
-		src/lvm.cpp
-		src/lzio.cpp
-		)
-		
-SET ( SRC_LUA  src/lua.cpp )
-SET ( SRC_LUAC src/luac.cpp )
+target_compile_definitions(${LUA_LIB_NAME} PUBLIC LUA_COMPAT_5_2)
+set_target_properties(${LUA_LIB_NAME} PROPERTIES DEFINE_SYMBOL LUA_EXPORTS)
 
-## BUILD
-# Create dynamic library (dll, so)
+if(CMAKE_COMPILER_IS_GNUCXX)
+	target_compile_options(${LUA_LIB_NAME} PRIVATE -Wall -Wextra)
+	set_target_properties(${LUA_LIB_NAME} PROPERTIES LINK_FLAGS "-Wl,-E")
+endif()
 
-ADD_LIBRARY ( liblua SHARED ${SRC_LIB} ${LUA_DLL_RC})
+if(CMAKE_COMPILER_IS_GNUCC)
+	target_compile_options(${LUA_LIB_NAME} PRIVATE -std=gnu99 -Wall -Wextra)
+	set_target_properties(${LUA_LIB_NAME} PROPERTIES LINK_FLAGS "-Wl,-E")
+endif()
 
-TARGET_LINK_LIBRARIES ( liblua ${LIBS} )
-SET_TARGET_PROPERTIES ( liblua PROPERTIES OUTPUT_NAME lua${LIB_LUA_VER} CLEAN_DIRECT_OUTPUT 1 )
+if(LUA_OS_LINUX)
+	target_compile_definitions(${LUA_LIB_NAME} PUBLIC LUA_USE_LINUX)
+	target_link_libraries(${LUA_LIB_NAME} PRIVATE m dl readline)
+elseif(LUA_OS_WINDOWS)
+	# LUA_USE_WINDOWS is defined in luaconf.h
+    message(WARNING "LUA is being built as DLL")
+	set_target_properties(${LUA_LIB_NAME} PROPERTIES COMPILE_DEFINITIONS LUA_BUILD_AS_DLL)
+endif()
 
-if ( LUA_WIN )
-	SET_TARGET_PROPERTIES ( liblua PROPERTIES COMPILE_FLAGS -DLUA_BUILD_AS_DLL)
-endif ( LUA_WIN )
+install(TARGETS ${LUA_LIB_NAME}
+	RUNTIME DESTINATION bin COMPONENT bin
+	LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT bin
+	ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT devel)
 
-SET_TARGET_PROPERTIES(  liblua PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua PROPERTIES LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
+install(FILES ${LUA_PUB_H} DESTINATION include/lua COMPONENT devel)
 
-SET_TARGET_PROPERTIES(  liblua PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
+if(LUA_BUILD_LUAC)
+	add_executable(luac ${LUA_SRC} src/luac.c ${LUA_PUB_H} ${LUA_INT_H})
 
-SET_TARGET_PROPERTIES(  liblua PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
+	if(LUA_OS_LINUX)
+		target_link_libraries(luac PRIVATE m dl readline)
+	endif()
 
-SET_TARGET_PROPERTIES(  liblua PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
+	install(TARGETS luac
+		RUNTIME DESTINATION bin COMPONENT bin
+		LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT bin
+		ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT devel)
+endif()
 
+if(LUA_BUILD_CLI)
+	add_executable(luacli src/lua.c ${LUA_PUB_H})
+	target_link_libraries(luacli PRIVATE ${LUA_LIB_NAME})
 
-# Create static library, this is needed to compile luac in the 5.1.x, 5.2 Lua series
+	if(LUA_OS_LINUX)
+		target_link_libraries(luacli PRIVATE readline)
+	endif()
 
-ADD_LIBRARY ( liblua_static STATIC ${SRC_LIB} )
-TARGET_LINK_LIBRARIES ( liblua_static ${LIBS} )
+	set_target_properties(luacli PROPERTIES OUTPUT_NAME lua)
 
-SET_TARGET_PROPERTIES ( liblua_static PROPERTIES OUTPUT_NAME lua${LIB_LUA_VER}_static CLEAN_DIRECT_OUTPUT 1 )
+	install(TARGETS luacli
+		RUNTIME DESTINATION bin COMPONENT bin
+		LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT bin
+		ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT devel)
+endif()
 
-SET_TARGET_PROPERTIES(  liblua_static PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua_static PROPERTIES LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-
-SET_TARGET_PROPERTIES(  liblua_static PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua_static PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-
-SET_TARGET_PROPERTIES(  liblua_static PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua_static PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-
-SET_TARGET_PROPERTIES(  liblua_static PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES(  liblua_static PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG ${PROJECT_BINARY_DIR}/lib${LIB_SUFFIX} )
-
-ADD_EXECUTABLE ( lua ${SRC_LUA} ${LUA_RC})
-TARGET_LINK_LIBRARIES ( lua liblua )
-
-SET_TARGET_PROPERTIES ( lua PROPERTIES DEBUG_POSTFIX d)
-
-SET_TARGET_PROPERTIES ( lua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG          ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES ( lua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES ( lua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE        ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES ( lua PROPERTIES RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL     ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
-
-
-ADD_EXECUTABLE ( luac ${SRC_LUAC} ${LUAC_RC} )
-TARGET_LINK_LIBRARIES ( luac liblua_static )
-
-SET_TARGET_PROPERTIES ( luac PROPERTIES DEBUG_POSTFIX d)
-
-SET_TARGET_PROPERTIES ( luac PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG          ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES ( luac PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES ( luac PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE        ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
-SET_TARGET_PROPERTIES ( luac PROPERTIES RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL     ${PROJECT_BINARY_DIR}/bin${LIB_SUFFIX} )
-
-
-ENABLE_TESTING()
-
-SET(TEST_PARAM -e _U=true)
-
-ADD_TEST(NAME test_all 
-         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/test 
-		 COMMAND lua ${TEST_PARAM} ${PROJECT_SOURCE_DIR}/test/all.lua)
-
-install(TARGETS liblua luac DESTINATION ${CMAKE_BINARY_DIR} EXPORT LUA53EXP)
-export(TARGETS lua FILE ${FIND_PACKAGE_SCRIPT_PATH}/Lua53-config.cmake)
+if(LUA_BUILD_CXX)
+	set_source_files_properties(${LUA_SRC} src/lua.c src/luac.c
+		PROPERTIES LANGUAGE CXX)
+endif()
